@@ -1,113 +1,127 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <title>Тренажёр по физике (9–11 класс)</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f4f7;
-            transition: background 0.5s ease;
-        }
+<meta charset="UTF-8" />
+<title>Тренажёр по физике (9–11 класс)</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f4f7;
+        transition: background 0.5s ease;
+    }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin: 30px 0;
-            font-size: 2.5em;
-            font-weight: bold;
-        }
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin: 20px 0;
+        font-size: 2em;
+        font-weight: bold;
+    }
 
-        /* Фон для главного меню с тематикой физики */
-        #menu {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 50px;
-            padding: 40px;
-            background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
-            background-size: cover;
-            background-position: center;
-            border-radius: 15px;
-            color: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
+    #menu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px auto;
+        padding: 30px;
+        max-width: 500px;
+        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+        background-size: cover;
+        background-position: center;
+        border-radius: 15px;
+        color: white;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
 
-        label, select, button {
-            font-size: 1.2em;
-        }
+    label, select, button {
+        font-size: 1.1em;
+    }
 
-        button, select {
-            background-color: #3498db;
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+    button, select {
+        background-color: #3498db;
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+    }
 
-        button:hover, select:hover {
-            background-color: #2980b9;
-            transform: scale(1.05);
-        }
+    button:hover, select:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+    }
 
-        .task {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            color: #2c3e50;
-        }
+    .task {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        margin: 10px auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        color: #2c3e50;
+        max-width: 500px;
+    }
 
-        .input-container {
-            margin-top: 10px;
-        }
+    .input-container {
+        margin-top: 10px;
+    }
 
-        input[type="number"] {
-            padding: 8px;
-            font-size: 1em;
-            width: 120px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+    input[type="number"] {
+        padding: 8px;
+        font-size: 1em;
+        width: 100%;
+        max-width: 150px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
 
-        #checkAnswersButton, #backButton {
-            margin-top: 20px;
-        }
+    #checkAnswersButton, #backButton {
+        margin-top: 15px;
+        max-width: 300px;
+    }
 
-        #results {
-            margin-top: 20px;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #2c3e50;
-        }
+    #results {
+        margin-top: 20px;
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: center;
+    }
 
-        #levelDisplay {
-            text-align: center;
-            font-size: 1.4em;
-            margin-top: 10px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
+    #levelDisplay {
+        text-align: center;
+        font-size: 1.2em;
+        margin-top: 10px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
 
-        /* Пояснение под задачей */
-        .explanation {
-            margin-top: 8px;
-            padding: 12px;
-            background-color: #eef6f9;
-            border-left: 5px solid #3498db;
-            font-size: 0.95em;
-            color: #2c3e50;
-            border-radius: 4px;
-            user-select: text;
-        }
-    </style>
+    .explanation {
+        margin-top: 8px;
+        padding: 10px;
+        background-color: #eef6f9;
+        border-left: 5px solid #3498db;
+        font-size: 0.95em;
+        color: #2c3e50;
+        border-radius: 4px;
+        user-select: text;
+    }
+
+    /* Адаптив для мобильных устройств */
+    @media (max-width: 768px) {
+        h1 { font-size: 1.6em; }
+        #menu { padding: 20px; }
+        button, select { font-size: 1em; padding: 8px 20px; }
+        .task { padding: 12px; margin: 8px; }
+        #results { font-size: 1em; }
+    }
+</style>
 </head>
 <body>
 
@@ -143,156 +157,106 @@
 <div id="results"></div>
 
 <script>
-    let currentTasks = [];
-    let experience = 300; // стартовый опыт
-    let level = 1;
+let currentTasks = [];
+let experience = 300;
+let level = 1;
 
-    function expForNextLevel(lv) {
-        if (lv === 1) return 900;
-        return 900 + 400 * (lv - 1);
-    }
+function expForNextLevel(lv) { return lv === 1 ? 900 : 900 + 400*(lv-1); }
+function updateLevelDisplay() {
+    const next = expForNextLevel(level);
+    document.getElementById("levelDisplay").innerText = `Уровень: ${level} | Опыт: ${experience} / ${next}`;
+}
 
-    function updateLevelDisplay() {
-        const nextLevelExp = expForNextLevel(level);
-        document.getElementById("levelDisplay").innerText = `Уровень: ${level} | Опыт: ${experience} / ${nextLevelExp}`;
-    }
+function generateTasks() {
+    const topic = document.getElementById("topic").value;
+    const numTasks = parseInt(document.getElementById("numTasks").value);
+    const tasksDiv = document.getElementById("tasks");
+    tasksDiv.innerHTML = "";
+    currentTasks = [];
+    const maxParam = 10 + level*5;
 
-    function generateTasks() {
-        const topic = document.getElementById("topic").value;
-        const numTasks = parseInt(document.getElementById("numTasks").value);
-        const tasksDiv = document.getElementById("tasks");
-
-        tasksDiv.innerHTML = "";
-        currentTasks = [];
-
-        const maxParam = 10 + level * 5;
-
-        for (let i = 0; i < numTasks; i++) {
-            let taskText = "";
-            let answer = 0;
-            let explanation = "";
-
-            if (topic === "mechanics") {
-                let v = Math.floor(Math.random() * maxParam) + 5;
-                let t = Math.floor(Math.random() * maxParam) + 1;
-                answer = v * t;
-                taskText = `Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь (в м).`;
-                explanation = `Путь вычисляется по формуле S = v × t.<br>Здесь S — путь, v — скорость, t — время.<br>Подставляем значения: S = ${v} × ${t} = ${answer} м.`;
-            } else if (topic === "electricity") {
-                let I = Math.floor(Math.random() * (maxParam / 2)) + 1;
-                let R = Math.floor(Math.random() * maxParam) + 1;
-                answer = I * R;
-                taskText = `Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение (в В).`;
-                explanation = `Напряжение вычисляется по закону Ома: U = I × R.<br>Здесь U — напряжение, I — сила тока, R — сопротивление.<br>Подставляем значения: U = ${I} × ${R} = ${answer} В.`;
-            } else if (topic === "optics") {
-                let f = Math.floor(Math.random() * maxParam) + 1;
-                answer = +(1 / f).toFixed(3);
-                taskText = `Фокусное расстояние линзы ${f} м. Найдите оптическую силу (в дптр).`;
-                explanation = `Оптическая сила D = 1 / f, где f — фокусное расстояние в метрах.<br>Подставляем: D = 1 / ${f} = ${answer} дптр.`;
-            } else if (topic === "random") {
-                const randTopic = Math.floor(Math.random() * 3);
-                if (randTopic === 0) {
-                    let v = Math.floor(Math.random() * maxParam) + 5;
-                    let t = Math.floor(Math.random() * maxParam) + 1;
-                    answer = v * t;
-                    taskText = `Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь (в м).`;
-                    explanation = `Путь вычисляется по формуле S = v × t.<br>Здесь S — путь, v — скорость, t — время.<br>Подставляем значения: S = ${v} × ${t} = ${answer} м.`;
-                } else if (randTopic === 1) {
-                    let I = Math.floor(Math.random() * (maxParam / 2)) + 1;
-                    let R = Math.floor(Math.random() * maxParam) + 1;
-                    answer = I * R;
-                    taskText = `Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение (в В).`;
-                    explanation = `Напряжение вычисляется по закону Ома: U = I × R.<br>Здесь U — напряжение, I — сила тока, R — сопротивление.<br>Подставляем значения: U = ${I} × ${R} = ${answer} В.`;
-                } else if (randTopic === 2) {
-                    let f = Math.floor(Math.random() * maxParam) + 1;
-                    answer = +(1 / f).toFixed(3);
-                    taskText = `Фокусное расстояние линзы ${f} м. Найдите оптическую силу (в дптр).`;
-                    explanation = `Оптическая сила D = 1 / f, где f — фокусное расстояние в метрах.<br>Подставляем: D = 1 / ${f} = ${answer} дптр.`;
-                }
-            }
-
-            currentTasks.push({ task: taskText, answer: answer, explanation: explanation, isSolved: false });
-
-            tasksDiv.innerHTML += `
-                <div class="task">
-                    <p>${taskText}</p>
-                    <div class="input-container">
-                        <label for="answer${i}">Ваш ответ: </label>
-                        <input type="number" id="answer${i}" step="any" placeholder="Введите ответ" />
-                    </div>
-                    <div class="explanation" id="explanation${i}" style="display:none;"></div>
+    for (let i=0;i<numTasks;i++){
+        let taskText="",answer=0,explanation="";
+        if (topic==="mechanics" || (topic==="random" && Math.random()<0.33)){
+            let v=Math.floor(Math.random()*maxParam)+5;
+            let t=Math.floor(Math.random()*maxParam)+1;
+            answer=v*t;
+            taskText=`Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь (в м).`;
+            explanation=`S = v × t = ${v} × ${t} = ${answer} м.`;
+        } else if (topic==="electricity" || (topic==="random" && Math.random()<0.66)){
+            let I=Math.floor(Math.random()*(maxParam/2))+1;
+            let R=Math.floor(Math.random()*maxParam)+1;
+            answer=I*R;
+            taskText=`Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение (в В).`;
+            explanation=`U = I × R = ${I} × ${R} = ${answer} В.`;
+        } else {
+            let f=Math.floor(Math.random()*maxParam)+1;
+            answer=+(1/f).toFixed(3);
+            taskText=`Фокусное расстояние линзы ${f} м. Найдите оптическую силу (в дптр).`;
+            explanation=`D = 1 / f = 1 / ${f} = ${answer} дптр.`;
+        }
+        currentTasks.push({task:taskText,answer:answer,explanation:explanation,isSolved:false});
+        tasksDiv.innerHTML+=`
+            <div class="task">
+                <p>${taskText}</p>
+                <div class="input-container">
+                    <label for="answer${i}">Ваш ответ: </label>
+                    <input type="number" id="answer${i}" step="any" placeholder="Введите ответ"/>
                 </div>
-            `;
-        }
-
-        document.getElementById("checkAnswersButton").style.display = "inline-block";
-        document.getElementById("backButton").style.display = "inline-block";
-        document.getElementById("menu").style.display = "none";
-        document.getElementById("results").innerHTML = "";
+                <div class="explanation" id="explanation${i}" style="display:none;"></div>
+            </div>
+        `;
     }
+    document.getElementById("checkAnswersButton").style.display="inline-block";
+    document.getElementById("backButton").style.display="inline-block";
+    document.getElementById("menu").style.display="none";
+    document.getElementById("results").innerHTML="";
+}
 
-    function checkAnswers() {
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "";
-
-        let gainedExp = 0;
-
-        for (let index = 0; index < currentTasks.length; index++) {
-            const task = currentTasks[index];
-            const input = document.getElementById(`answer${index}`);
-            const explanationDiv = document.getElementById(`explanation${index}`);
-            const userAnswerRaw = input.value.trim();
-
-            explanationDiv.style.display = "none";
-            explanationDiv.innerHTML = "";
-
-            if (userAnswerRaw === "") {
-                resultsDiv.innerHTML += `<div>Задача ${index + 1}: Ответ не введён.</div>`;
-                continue;
-            }
-
-            const userAnswer = parseFloat(userAnswerRaw);
-            if (isNaN(userAnswer)) {
-                resultsDiv.innerHTML += `<div>Задача ${index + 1}: Некорректный ответ.</div>`;
-                continue;
-            }
-
-            const tolerance = 0.01;
-            if (Math.abs(userAnswer - task.answer) <= tolerance) {
-                resultsDiv.innerHTML += `<div style="color:green;">Задача ${index + 1}: Верно!</div>`;
-                if (!task.isSolved) {
-                    gainedExp += 300;
-                    task.isSolved = true;
-                }
-            } else {
-                resultsDiv.innerHTML += `<div style="color:red;">Задача ${index + 1}: Неверно. Правильный ответ: ${task.answer}</div>`;
-            }
-
-            explanationDiv.style.display = "block";
-            explanationDiv.innerHTML = `<strong>Объяснение:</strong><br>${task.explanation}`;
+function checkAnswers() {
+    const resultsDiv=document.getElementById("results");
+    resultsDiv.innerHTML="";
+    let gainedExp=0;
+    for(let i=0;i<currentTasks.length;i++){
+        const task=currentTasks[i];
+        const input=document.getElementById(`answer${i}`);
+        const explanationDiv=document.getElementById(`explanation${i}`);
+        const userAnswerRaw=input.value.trim();
+        explanationDiv.style.display="none";
+        explanationDiv.innerHTML="";
+        if(userAnswerRaw===""){resultsDiv.innerHTML+=`<div>Задача ${i+1}: Ответ не введён.</div>`;continue;}
+        const userAnswer=parseFloat(userAnswerRaw);
+        if(isNaN(userAnswer)){resultsDiv.innerHTML+=`<div>Задача ${i+1}: Некорректный ответ.</div>`;continue;}
+        const tolerance=0.01;
+        if(Math.abs(userAnswer-task.answer)<=tolerance){
+            resultsDiv.innerHTML+=`<div style="color:green;">Задача ${i+1}: Верно!</div>`;
+            if(!task.isSolved){gainedExp+=300;task.isSolved=true;}
+        } else {
+            resultsDiv.innerHTML+=`<div style="color:red;">Задача ${i+1}: Неверно. Правильный ответ: ${task.answer}</div>`;
         }
-
-        if (gainedExp > 0) {
-            experience += gainedExp;
-            while (experience >= expForNextLevel(level)) {
-                experience -= expForNextLevel(level);
-                level++;
-                alert(`Поздравляем! Вы повысили уровень до ${level}!`);
-            }
-            updateLevelDisplay();
+        explanationDiv.style.display="block";
+        explanationDiv.innerHTML=`<strong>Объяснение:</strong><br>${task.explanation}`;
+    }
+    if(gainedExp>0){
+        experience+=gainedExp;
+        while(experience>=expForNextLevel(level)){
+            experience-=expForNextLevel(level);
+            level++;
+            alert(`Поздравляем! Вы повысили уровень до ${level}!`);
         }
+        updateLevelDisplay();
     }
+}
 
-    function goBack() {
-        document.getElementById("menu").style.display = "flex";
-        document.getElementById("tasks").innerHTML = "";
-        document.getElementById("checkAnswersButton").style.display = "none";
-        document.getElementById("backButton").style.display = "none";
-        document.getElementById("results").innerHTML = "";
-    }
+function goBack(){
+    document.getElementById("menu").style.display="flex";
+    document.getElementById("tasks").innerHTML="";
+    document.getElementById("checkAnswersButton").style.display="none";
+    document.getElementById("backButton").style.display="none";
+    document.getElementById("results").innerHTML="";
+}
 
-    updateLevelDisplay();
+updateLevelDisplay();
 </script>
-
 </body>
 </html>
