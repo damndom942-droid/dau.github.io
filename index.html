@@ -2,261 +2,312 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<title>Тренажёр по физике (9–11 класс)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Физика 9–11 класс - тренажёр</title>
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f4f7;
-        transition: background 0.5s ease;
-    }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0; padding: 0;
+    background-color: #f0f4f7;
+    transition: background 0.5s ease;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    color: #fff;
+  }
 
-    h1 {
-        text-align: center;
-        color: #2c3e50;
-        margin: 20px 0;
-        font-size: 2em;
-        font-weight: bold;
-    }
+  h1 {
+    margin-top: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+  }
 
-    #menu {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 15px;
-        margin: 20px auto;
-        padding: 30px;
-        max-width: 500px;
-        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
-        background-size: cover;
-        background-position: center;
-        border-radius: 15px;
-        color: white;
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
+  #levelDisplay {
+    margin: 10px 0 25px 0;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  }
 
-    label, select, button {
-        font-size: 1.1em;
-    }
+  #menu {
+    background: rgba(0, 70, 160, 0.85);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+  }
 
-    button, select {
-        background-color: #3498db;
-        border: none;
-        color: white;
-        padding: 10px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-        max-width: 300px;
-    }
+  label { font-size: 1rem; margin-bottom: 5px; }
+  select, button {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+  }
+  select:focus, button:hover { background-color: #1a50a0; color: #fff; }
+  button { background-color: #2e7eea; font-weight: 700; }
 
-    button:hover, select:hover {
-        background-color: #2980b9;
-        transform: scale(1.05);
-    }
+  #tasks {
+    margin-top: 30px;
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
 
-    .task {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 15px;
-        margin: 10px auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        color: #2c3e50;
-        max-width: 500px;
-    }
+  .task {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 18px 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    color: #222;
+    animation: fadeIn 0.5s ease forwards;
+  }
+  .task p { margin: 0 0 10px 0; font-size: 1.1rem; }
+  .input-container { display: flex; align-items: center; gap: 8px; }
+  .input-container label { font-weight: 600; white-space: nowrap; }
+  input[type="number"] {
+    flex-grow: 1; padding: 8px 12px;
+    border: 1.8px solid #999; border-radius: 8px; outline: none;
+    transition: border-color 0.3s ease;
+  }
+  input[type="number"]:focus { border-color: #2e7eea; }
 
-    .input-container {
-        margin-top: 10px;
-    }
+  .explanation {
+    margin-top: 12px;
+    background-color: #e4f0ff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: #1a2a47;
+  }
 
-    input[type="number"] {
-        padding: 8px;
-        font-size: 1em;
-        width: 100%;
-        max-width: 150px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
+  #checkAnswersButton, #backButton {
+    margin: 20px 10px 40px 10px;
+    padding: 12px 22px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #0a62d7;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    transition: background-color 0.3s ease;
+    min-width: 160px;
+  }
+  #checkAnswersButton:hover, #backButton:hover { background-color: #084a9f; }
+  #buttonsWrapper { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
 
-    #checkAnswersButton, #backButton {
-        margin-top: 15px;
-        max-width: 300px;
-    }
+  #results { max-width: 700px; width: 100%; margin-bottom: 30px; font-weight: 600; font-size: 1.1rem; color: #222; }
 
-    #results {
-        margin-top: 20px;
-        font-size: 1.1em;
-        font-weight: 600;
-        color: #2c3e50;
-        text-align: center;
-    }
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(15px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
 
-    #levelDisplay {
-        text-align: center;
-        font-size: 1.2em;
-        margin-top: 10px;
-        color: #2c3e50;
-        font-weight: 600;
-    }
-
-    .explanation {
-        margin-top: 8px;
-        padding: 10px;
-        background-color: #eef6f9;
-        border-left: 5px solid #3498db;
-        font-size: 0.95em;
-        color: #2c3e50;
-        border-radius: 4px;
-        user-select: text;
-    }
-
-    /* Адаптив для мобильных устройств */
-    @media (max-width: 768px) {
-        h1 { font-size: 1.6em; }
-        #menu { padding: 20px; }
-        button, select { font-size: 1em; padding: 8px 20px; }
-        .task { padding: 12px; margin: 8px; }
-        #results { font-size: 1em; }
-    }
+  @media (max-width: 480px) {
+    #menu { max-width: 100%; padding: 15px; }
+    #tasks { max-width: 100%; }
+    #checkAnswersButton, #backButton { min-width: 100%; }
+  }
 </style>
 </head>
 <body>
 
-<h1>Тренажёр по физике (9–11 класс)</h1>
+<h1>Физика 9–11 класс - тренажёр</h1>
+<div id="levelDisplay">Уровень: 1 | Опыт: 0 / 900</div>
 
-<div id="levelDisplay">Уровень: 1 | Опыт: 300 / 900</div>
+<div id="menu">
+  <label for="topic">Выберите тему:</label>
+  <select id="topic">
+    <option value="mechanics">Механика</option>
+    <option value="electricity">Электричество</option>
+    <option value="optics">Оптика</option>
+    <option value="random">Случайные задачи</option>
+  </select>
 
-<div class="menu-container" id="menu">
-    <label for="topic">Выберите тему:</label>
-    <select id="topic">
-        <option value="mechanics">Механика</option>
-        <option value="electricity">Электричество</option>
-        <option value="optics">Оптика</option>
-        <option value="random">Случайные задачи</option>
-    </select>
+  <label for="numTasks">Сколько задач хотите?</label>
+  <select id="numTasks">
+    <option value="1">1 задача</option>
+    <option value="2">2 задачи</option>
+    <option value="3">3 задачи</option>
+    <option value="4">4 задачи</option>
+  </select>
 
-    <label for="numTasks">Сколько задач хотите?</label>
-    <select id="numTasks">
-        <option value="1">1 задача</option>
-        <option value="2">2 задачи</option>
-        <option value="3">3 задачи</option>
-        <option value="4">4 задачи</option>
-    </select>
-
-    <button onclick="generateTasks()">Получить задачи</button>
+  <button onclick="generateTasks()">Получить задачи</button>
 </div>
 
 <div id="tasks"></div>
 
-<button id="checkAnswersButton" onclick="checkAnswers()" style="display: none;">Проверить ответы</button>
-<button id="backButton" onclick="goBack()" style="display: none;">Вернуться назад</button>
+<div id="buttonsWrapper" style="display:none;">
+  <button id="checkAnswersButton" onclick="checkAnswers()">Проверить ответы</button>
+  <button id="backButton" onclick="goBack()">Вернуться назад</button>
+</div>
 
 <div id="results"></div>
 
 <script>
 let currentTasks = [];
-let experience = 300;
-let level = 1;
+let experience = parseInt(localStorage.getItem("experience")) || 0;
+let level = parseInt(localStorage.getItem("level")) || 1;
 
-function expForNextLevel(lv) { return lv === 1 ? 900 : 900 + 400*(lv-1); }
+function expForNextLevel(lv) { return lv===1 ? 900 : 900+400*(lv-1); }
 function updateLevelDisplay() {
-    const next = expForNextLevel(level);
-    document.getElementById("levelDisplay").innerText = `Уровень: ${level} | Опыт: ${experience} / ${next}`;
+  document.getElementById("levelDisplay").innerText =
+    `Уровень: ${level} | Опыт: ${experience} / ${expForNextLevel(level)}`;
+  localStorage.setItem("experience", experience);
+  localStorage.setItem("level", level);
+}
+
+// Главный фон
+document.body.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80')";
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
+
+function setTaskBackground(topic){
+  let bgUrl="";
+  if(topic==="mechanics")
+    bgUrl="https://images.unsplash.com/photo-1581092795367-25cf35f1d2c1?auto=format&fit=crop&w=1280&q=80";
+  else if(topic==="electricity")
+    bgUrl="https://images.unsplash.com/photo-1581092336120-88db16c6d8e3?auto=format&fit=crop&w=1280&q=80";
+  else if(topic==="optics")
+    bgUrl="https://images.unsplash.com/photo-1579154203451-d1d5c24d45bc?auto=format&fit=crop&w=1280&q=80";
+  else
+    bgUrl="https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80";
+
+  document.body.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${bgUrl})`;
+  document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundPosition = "center";
 }
 
 function generateTasks() {
-    const topic = document.getElementById("topic").value;
-    const numTasks = parseInt(document.getElementById("numTasks").value);
-    const tasksDiv = document.getElementById("tasks");
-    tasksDiv.innerHTML = "";
-    currentTasks = [];
-    const maxParam = 10 + level*5;
+  const topic=document.getElementById("topic").value;
+  const numTasks=parseInt(document.getElementById("numTasks").value);
+  const tasksDiv=document.getElementById("tasks");
+  tasksDiv.innerHTML=""; currentTasks=[];
+  const maxParam=10+level*5;
 
-    for (let i=0;i<numTasks;i++){
-        let taskText="",answer=0,explanation="";
-        if (topic==="mechanics" || (topic==="random" && Math.random()<0.33)){
-            let v=Math.floor(Math.random()*maxParam)+5;
-            let t=Math.floor(Math.random()*maxParam)+1;
-            answer=v*t;
-            taskText=`Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь (в м).`;
-            explanation=`S = v × t = ${v} × ${t} = ${answer} м.`;
-        } else if (topic==="electricity" || (topic==="random" && Math.random()<0.66)){
-            let I=Math.floor(Math.random()*(maxParam/2))+1;
-            let R=Math.floor(Math.random()*maxParam)+1;
-            answer=I*R;
-            taskText=`Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение (в В).`;
-            explanation=`U = I × R = ${I} × ${R} = ${answer} В.`;
-        } else {
-            let f=Math.floor(Math.random()*maxParam)+1;
-            answer=+(1/f).toFixed(3);
-            taskText=`Фокусное расстояние линзы ${f} м. Найдите оптическую силу (в дптр).`;
-            explanation=`D = 1 / f = 1 / ${f} = ${answer} дптр.`;
-        }
-        currentTasks.push({task:taskText,answer:answer,explanation:explanation,isSolved:false});
-        tasksDiv.innerHTML+=`
-            <div class="task">
-                <p>${taskText}</p>
-                <div class="input-container">
-                    <label for="answer${i}">Ваш ответ: </label>
-                    <input type="number" id="answer${i}" step="any" placeholder="Введите ответ"/>
-                </div>
-                <div class="explanation" id="explanation${i}" style="display:none;"></div>
-            </div>
-        `;
+  setTaskBackground(topic);
+  document.getElementById("menu").style.display="none";
+  document.getElementById("buttonsWrapper").style.display="flex";
+  document.getElementById("results").innerHTML="";
+
+  for(let i=0;i<numTasks;i++){
+    let taskText="",answer=0,explanation="";
+    if(topic==="mechanics" || (topic==="random" && Math.random()<0.33)){
+      let v=Math.floor(Math.random()*maxParam)+5;
+      let t=Math.floor(Math.random()*maxParam)+1;
+      answer=v*t;
+      taskText=`Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь (в м).`;
+      explanation=`S = v × t = ${v} × ${t} = ${answer} м.`;
+    } else if(topic==="electricity" || (topic==="random" && Math.random()<0.66)){
+      let I=Math.floor(Math.random()*(maxParam/2))+1;
+      let R=Math.floor(Math.random()*maxParam)+1;
+      answer=I*R;
+      taskText=`Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение (в В).`;
+      explanation=`U = I × R = ${I} × ${R} = ${answer} В.`;
+    } else {
+      let f=Math.floor(Math.random()*maxParam)+1;
+      answer=+(1/f).toFixed(3);
+      taskText=`Фокусное расстояние линзы ${f} м. Найдите оптическую силу (в дптр).`;
+      explanation=`D = 1 / f = 1 / ${f} = ${answer} дптр.`;
     }
-    document.getElementById("checkAnswersButton").style.display="inline-block";
-    document.getElementById("backButton").style.display="inline-block";
-    document.getElementById("menu").style.display="none";
-    document.getElementById("results").innerHTML="";
+
+    currentTasks.push({task:taskText, answer:answer, explanation:explanation, isSolved:false});
+    const taskDiv=document.createElement("div");
+    taskDiv.className="task";
+    taskDiv.style.animationDelay=`${i*0.15}s`;
+    taskDiv.innerHTML=`
+      <p>${taskText}</p>
+      <div class="input-container">
+        <label for="answer${i}">Ваш ответ:</label>
+        <input type="number" id="answer${i}" step="any" placeholder="Введите ответ" />
+      </div>
+      <div class="explanation" id="explanation${i}" style="display:none;"></div>
+    `;
+    tasksDiv.appendChild(taskDiv);
+  }
 }
 
-function checkAnswers() {
-    const resultsDiv=document.getElementById("results");
-    resultsDiv.innerHTML="";
-    let gainedExp=0;
-    for(let i=0;i<currentTasks.length;i++){
-        const task=currentTasks[i];
-        const input=document.getElementById(`answer${i}`);
-        const explanationDiv=document.getElementById(`explanation${i}`);
-        const userAnswerRaw=input.value.trim();
-        explanationDiv.style.display="none";
-        explanationDiv.innerHTML="";
-        if(userAnswerRaw===""){resultsDiv.innerHTML+=`<div>Задача ${i+1}: Ответ не введён.</div>`;continue;}
-        const userAnswer=parseFloat(userAnswerRaw);
-        if(isNaN(userAnswer)){resultsDiv.innerHTML+=`<div>Задача ${i+1}: Некорректный ответ.</div>`;continue;}
-        const tolerance=0.01;
-        if(Math.abs(userAnswer-task.answer)<=tolerance){
-            resultsDiv.innerHTML+=`<div style="color:green;">Задача ${i+1}: Верно!</div>`;
-            if(!task.isSolved){gainedExp+=300;task.isSolved=true;}
-        } else {
-            resultsDiv.innerHTML+=`<div style="color:red;">Задача ${i+1}: Неверно. Правильный ответ: ${task.answer}</div>`;
-        }
-        explanationDiv.style.display="block";
-        explanationDiv.innerHTML=`<strong>Объяснение:</strong><br>${task.explanation}`;
+function checkAnswers(){
+  const resultsDiv=document.getElementById("results");
+  resultsDiv.innerHTML="";
+  let gainedExp=0;
+
+  for(let i=0;i<currentTasks.length;i++){
+    const task=currentTasks[i];
+    const input=document.getElementById(`answer${i}`);
+    const explanationDiv=document.getElementById(`explanation${i}`);
+    const userAnswerRaw=input.value.trim();
+
+    explanationDiv.style.display="none";
+    explanationDiv.innerHTML="";
+
+    if(userAnswerRaw===""){
+      resultsDiv.innerHTML+=`<div>Задача ${i+1}: Ответ не введён.</div>`;
+      continue;
     }
-    if(gainedExp>0){
-        experience+=gainedExp;
-        while(experience>=expForNextLevel(level)){
-            experience-=expForNextLevel(level);
-            level++;
-            alert(`Поздравляем! Вы повысили уровень до ${level}!`);
-        }
-        updateLevelDisplay();
+
+    const userAnswer=parseFloat(userAnswerRaw);
+    if(isNaN(userAnswer)){
+      resultsDiv.innerHTML+=`<div>Задача ${i+1}: Некорректный ответ.</div>`;
+      continue;
     }
+
+    const tolerance=0.01;
+    if(Math.abs(userAnswer-task.answer)<=tolerance){
+      resultsDiv.innerHTML+=`<div style="color:green;">Задача ${i+1}: Верно!</div>`;
+      if(!task.isSolved){ gainedExp+=300; task.isSolved=true; }
+    } else {
+      resultsDiv.innerHTML+=`<div style="color:red;">Задача ${i+1}: Неверно. Правильный ответ: ${task.answer}</div>`;
+    }
+
+    explanationDiv.style.display="block";
+    explanationDiv.innerHTML=`<strong>Объяснение:</strong><br>${task.explanation}`;
+  }
+
+  if(gainedExp>0){
+    experience+=gainedExp;
+    while(experience>=expForNextLevel(level)){
+      experience-=expForNextLevel(level);
+      level++;
+      alert(`Поздравляем! Вы повысили уровень до ${level}!`);
+    }
+    updateLevelDisplay();
+  }
 }
 
 function goBack(){
-    document.getElementById("menu").style.display="flex";
-    document.getElementById("tasks").innerHTML="";
-    document.getElementById("checkAnswersButton").style.display="none";
-    document.getElementById("backButton").style.display="none";
-    document.getElementById("results").innerHTML="";
+  document.getElementById("menu").style.display="flex";
+  document.getElementById("tasks").innerHTML="";
+  document.getElementById("buttonsWrapper").style.display="none";
+  document.getElementById("results").innerHTML="";
+  document.body.style.backgroundImage="linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80')";
 }
 
 updateLevelDisplay();
 </script>
+
 </body>
 </html>
