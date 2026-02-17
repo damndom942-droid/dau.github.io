@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <link rel="icon" type="image/png" href="/my-favicon/./favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/my-favicon/./favicon.svg" />
 <link rel="shortcut icon" href="/my-favicon/./favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/my-favicon/./apple-touch-icon.png" />
 <link rel="manifest" href="/my-favicon/./site.webmanifest" />
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Физика 9–11 класс - тренажёр</title>
+
 <style>
   * { box-sizing: border-box; }
+
   body {
-    font-family: 'Arial', sans-serif;
-    margin: 0; padding: 0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     background-color: #f0f4f7;
-    transition: background 0.5s ease;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -25,6 +29,7 @@
     align-items: center;
     padding: 10px;
     color: #fff;
+    transition: background 0.5s ease;
   }
 
   h1 {
@@ -34,28 +39,50 @@
   }
 
   #levelDisplay {
-    margin: 10px 0 25px 0;
+    margin: 10px 0 10px 0;
     font-weight: 600;
     text-align: center;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
   }
 
+  #expBarWrapper {
+    width: 100%;
+    max-width: 420px;
+    height: 18px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    margin-bottom: 15px;
+  }
+
+  #expBar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    transition: width 0.4s ease;
+  }
+
   #menu {
     background: rgba(0, 70, 160, 0.85);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     padding: 20px;
     border-radius: 12px;
-    max-width: 360px;
+    max-width: 460px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
     color: #fff;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
   }
 
-  label { font-size: 1rem; margin-bottom: 5px; }
+  label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
   select, button {
     font-size: 1rem;
     padding: 10px 15px;
@@ -67,12 +94,20 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     transition: background-color 0.3s ease;
   }
-  select:focus, button:hover { background-color: #1a50a0; color: #fff; }
-  button { background-color: #2e7eea; font-weight: 700; }
+
+  select:focus, button:hover {
+    background-color: #1a50a0;
+    color: #fff;
+  }
+
+  button {
+    background-color: #2e7eea;
+    font-weight: 700;
+  }
 
   #tasks {
     margin-top: 30px;
-    max-width: 700px;
+    max-width: 850px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -87,15 +122,46 @@
     color: #222;
     animation: fadeIn 0.5s ease forwards;
   }
-  .task p { margin: 0 0 10px 0; font-size: 1.1rem; }
-  .input-container { display: flex; align-items: center; gap: 8px; }
-  .input-container label { font-weight: 600; white-space: nowrap; }
-  input[type="number"] {
-    flex-grow: 1; padding: 8px 12px;
-    border: 1.8px solid #999; border-radius: 8px; outline: none;
-    transition: border-color 0.3s ease;
+
+  .task p {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
   }
-  input[type="number"]:focus { border-color: #2e7eea; }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .input-container label {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  input[type="number"] {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1.8px solid #999;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    min-width: 150px;
+  }
+
+  input[type="number"]:focus {
+    border-color: #2e7eea;
+  }
+
+  .unit {
+    font-weight: 800;
+    color: #1a2a47;
+    background: #dcecff;
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
 
   .explanation {
     margin-top: 12px;
@@ -107,8 +173,15 @@
     color: #1a2a47;
   }
 
-  #checkAnswersButton, #backButton {
-    margin: 20px 10px 40px 10px;
+  #buttonsWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  #checkAnswersButton, #backButton, #nextButton, #resetButton {
     padding: 12px 22px;
     font-size: 1.1rem;
     border-radius: 10px;
@@ -116,32 +189,121 @@
     cursor: pointer;
     background-color: #0a62d7;
     color: white;
-    font-weight: 700;
+    font-weight: 800;
     box-shadow: 0 5px 10px rgba(0,0,0,0.15);
     transition: background-color 0.3s ease;
-    min-width: 160px;
+    min-width: 180px;
   }
-  #checkAnswersButton:hover, #backButton:hover { background-color: #084a9f; }
-  #buttonsWrapper { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
 
-  #results { max-width: 700px; width: 100%; margin-bottom: 30px; font-weight: 600; font-size: 1.1rem; color: #222; }
+  #checkAnswersButton:hover, #backButton:hover, #nextButton:hover, #resetButton:hover {
+    background-color: #084a9f;
+  }
+
+  #resetButton {
+    background-color: #e74c3c;
+  }
+  #resetButton:hover {
+    background-color: #c0392b;
+  }
+
+  #results {
+    max-width: 850px;
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #222;
+    background: rgba(255,255,255,0.92);
+    border-radius: 12px;
+    padding: 15px 18px;
+    display: none;
+  }
+
+  .good { color: green; font-weight: 800; }
+  .bad { color: red; font-weight: 800; }
+
+  #levelUpMessage {
+    max-width: 850px;
+    width: 100%;
+    background: rgba(0, 255, 120, 0.18);
+    border: 2px solid rgba(0, 255, 120, 0.55);
+    color: #fff;
+    font-weight: 900;
+    padding: 12px 15px;
+    border-radius: 12px;
+    text-align: center;
+    display: none;
+    margin-top: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  }
+
+  #statsBox {
+    max-width: 850px;
+    width: 100%;
+    margin-top: 15px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-weight: 700;
+    display: none;
+  }
+
+  #achievementsBox {
+    max-width: 850px;
+    width: 100%;
+    margin-top: 12px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-weight: 800;
+    display: none;
+  }
+
+  .achUnlocked {
+    color: #00ff9d;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  }
+
+  #examModeInfo {
+    max-width: 850px;
+    width: 100%;
+    background: rgba(255, 180, 0, 0.25);
+    border: 2px solid rgba(255, 180, 0, 0.55);
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-weight: 900;
+    margin-top: 12px;
+    text-align: center;
+    display: none;
+  }
 
   @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(15px);}
-    to {opacity: 1; transform: translateY(0);}
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @media (max-width: 480px) {
     #menu { max-width: 100%; padding: 15px; }
     #tasks { max-width: 100%; }
-    #checkAnswersButton, #backButton { min-width: 100%; }
+    #checkAnswersButton, #backButton, #nextButton, #resetButton { min-width: 100%; }
+    input[type="number"] { min-width: 100%; }
   }
 </style>
 </head>
+
 <body>
 
 <h1>Физика 9–11 класс - тренажёр</h1>
+
 <div id="levelDisplay">Уровень: 1 | Опыт: 0 / 900</div>
+<div id="expBarWrapper"><div id="expBar"></div></div>
+
+<div id="levelUpMessage"></div>
+<div id="examModeInfo"></div>
+
+<div id="statsBox"></div>
+<div id="achievementsBox"></div>
 
 <div id="menu">
   <label for="topic">Выберите тему:</label>
@@ -149,7 +311,17 @@
     <option value="mechanics">Механика</option>
     <option value="electricity">Электричество</option>
     <option value="optics">Оптика</option>
+    <option value="thermodynamics">Термодинамика</option>
+    <option value="magnetism">Магнетизм</option>
     <option value="random">Случайные задачи</option>
+  </select>
+
+  <label for="difficulty">Сложность:</label>
+  <select id="difficulty">
+    <option value="easy">Лёгкая</option>
+    <option value="medium">Средняя</option>
+    <option value="hard">Сложная</option>
+    <option value="randomDiff">🎲 Случайная сложность</option>
   </select>
 
   <label for="numTasks">Сколько задач хотите?</label>
@@ -158,15 +330,24 @@
     <option value="2">2 задачи</option>
     <option value="3">3 задачи</option>
     <option value="4">4 задачи</option>
+    <option value="5">5 задач</option>
+  </select>
+
+  <label for="mode">Режим:</label>
+  <select id="mode">
+    <option value="normal">Обычный</option>
+    <option value="exam">Экзамен (10 задач)</option>
   </select>
 
   <button onclick="generateTasks()">Получить задачи</button>
+  <button id="resetButton" onclick="resetProgress()">Сбросить прогресс</button>
 </div>
 
 <div id="tasks"></div>
 
 <div id="buttonsWrapper" style="display:none;">
   <button id="checkAnswersButton" onclick="checkAnswers()">Проверить ответы</button>
+  <button id="nextButton" onclick="nextTasks()">NEXT</button>
   <button id="backButton" onclick="goBack()">Вернуться назад</button>
 </div>
 
@@ -174,142 +355,584 @@
 
 <script>
 let currentTasks = [];
+let examMode = false;
+
 let experience = parseInt(localStorage.getItem("experience")) || 0;
 let level = parseInt(localStorage.getItem("level")) || 1;
 
-function expForNextLevel(lv) { return lv===1 ? 900 : 900+400*(lv-1); }
+let stats = JSON.parse(localStorage.getItem("statsPhysics")) || {
+  mechanics: { total: 0, correct: 0 },
+  electricity: { total: 0, correct: 0 },
+  optics: { total: 0, correct: 0 },
+  thermodynamics: { total: 0, correct: 0 },
+  magnetism: { total: 0, correct: 0 }
+};
+
+let achievements = JSON.parse(localStorage.getItem("achievementsPhysics")) || {
+  streak5: false,
+  streak10: false,
+  streak20: false,
+  level5: false,
+  level10: false
+};
+
+let correctStreak = parseInt(localStorage.getItem("correctStreak")) || 0;
+
+let lastSettings = JSON.parse(localStorage.getItem("lastSettings")) || {
+  topic: "mechanics",
+  difficulty: "easy",
+  numTasks: "3",
+  mode: "normal"
+};
+
+function expForNextLevel(lv) {
+  return lv === 1 ? 900 : 900 + 400 * (lv - 1);
+}
+
 function updateLevelDisplay() {
   document.getElementById("levelDisplay").innerText =
     `Уровень: ${level} | Опыт: ${experience} / ${expForNextLevel(level)}`;
+
+  let percent = (experience / expForNextLevel(level)) * 100;
+  if (percent > 100) percent = 100;
+  if (percent < 0) percent = 0;
+
+  document.getElementById("expBar").style.width = percent + "%";
+
   localStorage.setItem("experience", experience);
   localStorage.setItem("level", level);
 }
 
-// Главный фон
-document.body.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80')";
-document.body.style.backgroundSize = "cover";
-document.body.style.backgroundPosition = "center";
+document.body.style.backgroundImage =
+  "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80')";
 
-function setTaskBackground(topic){
-  let bgUrl="";
-  if(topic==="mechanics")
-    bgUrl="https://images.unsplash.com/photo-1581092795367-25cf35f1d2c1?auto=format&fit=crop&w=1280&q=80";
-  else if(topic==="electricity")
-    bgUrl="https://images.unsplash.com/photo-1581092336120-88db16c6d8e3?auto=format&fit=crop&w=1280&q=80";
-  else if(topic==="optics")
-    bgUrl="https://images.unsplash.com/photo-1579154203451-d1d5c24d45bc?auto=format&fit=crop&w=1280&q=80";
+function setTaskBackground(topic) {
+  let bgUrl = "";
+
+  if (topic === "mechanics")
+    bgUrl = "https://images.unsplash.com/photo-1581092795367-25cf35f1d2c1?auto=format&fit=crop&w=1280&q=80";
+  else if (topic === "electricity")
+    bgUrl = "https://images.unsplash.com/photo-1581092336120-88db16c6d8e3?auto=format&fit=crop&w=1280&q=80";
+  else if (topic === "optics")
+    bgUrl = "https://images.unsplash.com/photo-1579154203451-d1d5c24d45bc?auto=format&fit=crop&w=1280&q=80";
+  else if (topic === "thermodynamics")
+    bgUrl = "https://images.unsplash.com/photo-1526402460112-0d4e87d0e5e8?auto=format&fit=crop&w=1280&q=80";
+  else if (topic === "magnetism")
+    bgUrl = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1280&q=80";
   else
-    bgUrl="https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80";
+    bgUrl = "https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80";
 
-  document.body.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${bgUrl})`;
-  document.body.style.backgroundSize = "cover";
-  document.body.style.backgroundPosition = "center";
+  document.body.style.backgroundImage =
+    `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url(${bgUrl})`;
 }
 
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function roundSmart(x) {
+  return Math.round(x * 1000) / 1000;
+}
+
+function getExpReward(difficulty) {
+  if (difficulty === "easy") return 200;
+  if (difficulty === "medium") return 350;
+  return 550;
+}
+
+function getRandomDifficulty() {
+  let r = Math.random();
+  if (r < 0.4) return "easy";
+  if (r < 0.75) return "medium";
+  return "hard";
+}
+
+/* ===================== МЕХАНИКА ===================== */
+function generateMechanicsTask(diff) {
+  let taskText = "", answer = 0, unit = "", explanation = "";
+
+  if (diff === "easy") {
+    let v = randInt(3, 20);
+    let t = randInt(2, 15);
+    answer = v * t;
+    unit = "м";
+    taskText = `Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь.`;
+    explanation = `S = v × t = ${v} × ${t} = ${answer} м.`;
+  }
+  else if (diff === "medium") {
+    let a = randInt(1, 8);
+    let t = randInt(2, 10);
+    answer = 0.5 * a * t * t;
+    unit = "м";
+    taskText = `Тело движется равноускоренно из состояния покоя с ускорением ${a} м/с² ${t} секунд. Найдите путь.`;
+    explanation = `S = (a × t²)/2 = (${a} × ${t}²)/2 = ${answer} м.`;
+  }
+  else {
+    let m = randInt(2, 15);
+    let v = randInt(5, 25);
+    answer = 0.5 * m * v * v;
+    unit = "Дж";
+    taskText = `Масса тела ${m} кг, скорость ${v} м/с. Найдите кинетическую энергию.`;
+    explanation = `Eк = (m × v²)/2 = (${m} × ${v}²)/2 = ${answer} Дж.`;
+  }
+
+  return { taskText, answer: roundSmart(answer), unit, explanation };
+}
+
+/* ===================== ЭЛЕКТРИЧЕСТВО ===================== */
+function generateElectricityTask(diff) {
+  let taskText = "", answer = 0, unit = "", explanation = "";
+
+  if (diff === "easy") {
+    let I = randInt(1, 12);
+    let R = randInt(1, 30);
+    answer = I * R;
+    unit = "В";
+    taskText = `Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение.`;
+    explanation = `U = I × R = ${I} × ${R} = ${answer} В.`;
+  }
+  else if (diff === "medium") {
+    let U = randInt(20, 220);
+    let R = randInt(5, 60);
+    answer = U / R;
+    unit = "А";
+    taskText = `Напряжение ${U} В, сопротивление ${R} Ом. Найдите силу тока.`;
+    explanation = `I = U / R = ${U} / ${R} = ${roundSmart(answer)} А.`;
+  }
+  else {
+    let U = randInt(50, 250);
+    let I = randInt(1, 10);
+    answer = U * I;
+    unit = "Вт";
+    taskText = `Напряжение ${U} В, сила тока ${I} А. Найдите мощность электрического тока.`;
+    explanation = `P = U × I = ${U} × ${I} = ${answer} Вт.`;
+  }
+
+  return { taskText, answer: roundSmart(answer), unit, explanation };
+}
+
+/* ===================== ОПТИКА ===================== */
+function generateOpticsTask(diff) {
+  let taskText = "", answer = 0, unit = "", explanation = "";
+
+  if (diff === "easy") {
+    let f = randInt(2, 20);
+    answer = 1 / f;
+    unit = "дптр";
+    taskText = `Фокусное расстояние линзы ${f} м. Найдите оптическую силу.`;
+    explanation = `D = 1 / f = 1 / ${f} = ${roundSmart(answer)} дптр.`;
+  }
+  else if (diff === "medium") {
+    let f = randInt(5, 30);
+    answer = f / 100;
+    unit = "м";
+    taskText = `Фокусное расстояние линзы ${f} см. Переведите в метры.`;
+    explanation = `${f} см = ${f} / 100 = ${answer} м.`;
+  }
+  else {
+    let d = randInt(2, 15);
+    answer = 1 / d;
+    unit = "м";
+    taskText = `Оптическая сила линзы ${d} дптр. Найдите фокусное расстояние.`;
+    explanation = `f = 1 / D = 1 / ${d} = ${roundSmart(answer)} м.`;
+  }
+
+  return { taskText, answer: roundSmart(answer), unit, explanation };
+}
+
+/* ===================== ТЕРМОДИНАМИКА ===================== */
+function generateThermoTask(diff) {
+  let taskText = "", answer = 0, unit = "", explanation = "";
+
+  if (diff === "easy") {
+    let c = 4200;
+    let m = randInt(1, 5);
+    let dt = randInt(10, 50);
+    answer = c * m * dt;
+    unit = "Дж";
+    taskText = `Нагревают воду массой ${m} кг на ${dt}°C. (c = 4200 Дж/(кг·°C)). Найдите количество теплоты.`;
+    explanation = `Q = c × m × ΔT = 4200 × ${m} × ${dt} = ${answer} Дж.`;
+  }
+  else if (diff === "medium") {
+    let L = 330000;
+    let m = randInt(1, 5);
+    answer = L * m;
+    unit = "Дж";
+    taskText = `Лёд массой ${m} кг плавится. Удельная теплота плавления льда λ = 330000 Дж/кг. Найдите Q.`;
+    explanation = `Q = λ × m = 330000 × ${m} = ${answer} Дж.`;
+  }
+  else {
+    let Q = randInt(4000, 12000);
+    let A = randInt(500, Q - 500);
+    answer = (A / Q) * 100;
+    unit = "%";
+    taskText = `Тепловая машина получила ${Q} Дж теплоты и совершила работу ${A} Дж. Найдите КПД.`;
+    explanation = `η = A/Q × 100% = ${A}/${Q} × 100% = ${roundSmart(answer)}%.`;
+  }
+
+  return { taskText, answer: roundSmart(answer), unit, explanation };
+}
+
+/* ===================== МАГНЕТИЗМ ===================== */
+function generateMagnetismTask(diff) {
+  let taskText = "", answer = 0, unit = "", explanation = "";
+
+  if (diff === "easy") {
+    let B = randInt(1, 8);
+    let I = randInt(1, 10);
+    let l = randInt(1, 6);
+    answer = B * I * l;
+    unit = "Н";
+    taskText = `Проводник длиной ${l} м с током ${I} А находится в магнитном поле B = ${B} Тл (угол 90°). Найдите силу Ампера.`;
+    explanation = `F = B × I × l = ${B} × ${I} × ${l} = ${answer} Н.`;
+  }
+  else if (diff === "medium") {
+    let q = 0.002;
+    let v = randInt(2, 10);
+    let B = randInt(1, 6);
+    answer = q * v * B;
+    unit = "Н";
+    taskText = `Заряд q = ${q} Кл движется со скоростью ${v} м/с в магнитном поле B = ${B} Тл (угол 90°). Найдите силу Лоренца.`;
+    explanation = `F = q × v × B = ${q} × ${v} × ${B} = ${roundSmart(answer)} Н.`;
+  }
+  else {
+    let F = randInt(10, 100);
+    let I = randInt(1, 10);
+    let l = randInt(1, 10);
+    answer = F / (I * l);
+    unit = "Тл";
+    taskText = `На проводник действует сила ${F} Н. Ток ${I} А, длина ${l} м (угол 90°). Найдите магнитную индукцию B.`;
+    explanation = `F = B × I × l → B = F/(I×l) = ${F}/(${I}×${l}) = ${roundSmart(answer)} Тл.`;
+  }
+
+  return { taskText, answer: roundSmart(answer), unit, explanation };
+}
+
+/* ===================== СТАТИСТИКА ===================== */
+function updateStatsBox() {
+  const box = document.getElementById("statsBox");
+  box.style.display = "block";
+
+  function line(name, obj) {
+    return `${name}: ${obj.correct} / ${obj.total}`;
+  }
+
+  box.innerHTML = `
+    📊 <b>Статистика:</b><br>
+    ${line("Механика", stats.mechanics)}<br>
+    ${line("Электричество", stats.electricity)}<br>
+    ${line("Оптика", stats.optics)}<br>
+    ${line("Термодинамика", stats.thermodynamics)}<br>
+    ${line("Магнетизм", stats.magnetism)}<br>
+    <hr>
+    🔥 Серия правильных подряд: <b>${correctStreak}</b>
+  `;
+}
+
+function saveStats() {
+  localStorage.setItem("statsPhysics", JSON.stringify(stats));
+  localStorage.setItem("correctStreak", correctStreak);
+}
+
+/* ===================== ДОСТИЖЕНИЯ ===================== */
+function checkAchievements() {
+  let unlocked = [];
+
+  if (!achievements.streak5 && correctStreak >= 5) {
+    achievements.streak5 = true;
+    unlocked.push("🏆 Серия 5 правильных подряд!");
+  }
+
+  if (!achievements.streak10 && correctStreak >= 10) {
+    achievements.streak10 = true;
+    unlocked.push("🏆 Серия 10 правильных подряд!");
+  }
+
+  if (!achievements.streak20 && correctStreak >= 20) {
+    achievements.streak20 = true;
+    unlocked.push("🏆 Серия 20 правильных подряд!");
+  }
+
+  if (!achievements.level5 && level >= 5) {
+    achievements.level5 = true;
+    unlocked.push("⭐ Достигнут 5 уровень!");
+  }
+
+  if (!achievements.level10 && level >= 10) {
+    achievements.level10 = true;
+    unlocked.push("🌟 Достигнут 10 уровень!");
+  }
+
+  localStorage.setItem("achievementsPhysics", JSON.stringify(achievements));
+
+  const box = document.getElementById("achievementsBox");
+
+  if (unlocked.length > 0) {
+    box.style.display = "block";
+    box.innerHTML = `<span class="achUnlocked">${unlocked.join("<br>")}</span>`;
+  }
+}
+
+/* ===================== ГЕНЕРАЦИЯ ===================== */
 function generateTasks() {
-  const topic=document.getElementById("topic").value;
-  const numTasks=parseInt(document.getElementById("numTasks").value);
-  const tasksDiv=document.getElementById("tasks");
-  tasksDiv.innerHTML=""; currentTasks=[];
-  const maxParam=10+level*5;
+  const topic = document.getElementById("topic").value;
+  const numTasksSelected = parseInt(document.getElementById("numTasks").value);
+  const difficulty = document.getElementById("difficulty").value;
+  const mode = document.getElementById("mode").value;
+
+  examMode = (mode === "exam");
+
+  let numTasks = examMode ? 10 : numTasksSelected;
+
+  lastSettings = {
+    topic: topic,
+    difficulty: difficulty,
+    numTasks: numTasksSelected.toString(),
+    mode: mode
+  };
+  localStorage.setItem("lastSettings", JSON.stringify(lastSettings));
+
+  const tasksDiv = document.getElementById("tasks");
+  tasksDiv.innerHTML = "";
+  currentTasks = [];
+
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("buttonsWrapper").style.display = "flex";
+  document.getElementById("results").style.display = "none";
+  document.getElementById("results").innerHTML = "";
+  document.getElementById("levelUpMessage").style.display = "none";
+  document.getElementById("achievementsBox").style.display = "none";
+
+  document.getElementById("examModeInfo").style.display = examMode ? "block" : "none";
+  document.getElementById("examModeInfo").innerHTML = examMode ? "⚠️ Экзамен: 10 задач. Объяснения будут после проверки." : "";
 
   setTaskBackground(topic);
-  document.getElementById("menu").style.display="none";
-  document.getElementById("buttonsWrapper").style.display="flex";
-  document.getElementById("results").innerHTML="";
+  updateStatsBox();
 
-  for(let i=0;i<numTasks;i++){
-    let taskText="",answer=0,explanation="";
-    if(topic==="mechanics" || (topic==="random" && Math.random()<0.33)){
-      let v=Math.floor(Math.random()*maxParam)+5;
-      let t=Math.floor(Math.random()*maxParam)+1;
-      answer=v*t;
-      taskText=`Тело движется со скоростью ${v} м/с в течение ${t} с. Найдите путь (в м).`;
-      explanation=`S = v × t = ${v} × ${t} = ${answer} м.`;
-    } else if(topic==="electricity" || (topic==="random" && Math.random()<0.66)){
-      let I=Math.floor(Math.random()*(maxParam/2))+1;
-      let R=Math.floor(Math.random()*maxParam)+1;
-      answer=I*R;
-      taskText=`Сила тока ${I} А, сопротивление ${R} Ом. Найдите напряжение (в В).`;
-      explanation=`U = I × R = ${I} × ${R} = ${answer} В.`;
-    } else {
-      let f=Math.floor(Math.random()*maxParam)+1;
-      answer=+(1/f).toFixed(3);
-      taskText=`Фокусное расстояние линзы ${f} м. Найдите оптическую силу (в дптр).`;
-      explanation=`D = 1 / f = 1 / ${f} = ${answer} дптр.`;
+  for (let i = 0; i < numTasks; i++) {
+    let taskObj;
+    let usedDifficulty = difficulty;
+
+    if (difficulty === "randomDiff") {
+      usedDifficulty = getRandomDifficulty();
     }
 
-    currentTasks.push({task:taskText, answer:answer, explanation:explanation, isSolved:false});
-    const taskDiv=document.createElement("div");
-    taskDiv.className="task";
-    taskDiv.style.animationDelay=`${i*0.15}s`;
-    taskDiv.innerHTML=`
-      <p>${taskText}</p>
+    if (topic === "mechanics") taskObj = generateMechanicsTask(usedDifficulty);
+    else if (topic === "electricity") taskObj = generateElectricityTask(usedDifficulty);
+    else if (topic === "optics") taskObj = generateOpticsTask(usedDifficulty);
+    else if (topic === "thermodynamics") taskObj = generateThermoTask(usedDifficulty);
+    else if (topic === "magnetism") taskObj = generateMagnetismTask(usedDifficulty);
+    else {
+      let r = Math.random();
+      if (r < 0.2) taskObj = generateMechanicsTask(usedDifficulty);
+      else if (r < 0.4) taskObj = generateElectricityTask(usedDifficulty);
+      else if (r < 0.6) taskObj = generateOpticsTask(usedDifficulty);
+      else if (r < 0.8) taskObj = generateThermoTask(usedDifficulty);
+      else taskObj = generateMagnetismTask(usedDifficulty);
+    }
+
+    currentTasks.push({
+      task: taskObj.taskText,
+      answer: taskObj.answer,
+      explanation: taskObj.explanation,
+      unit: taskObj.unit,
+      isSolved: false,
+      difficulty: usedDifficulty,
+      topic: topic
+    });
+
+    const taskDiv = document.createElement("div");
+    taskDiv.className = "task";
+    taskDiv.style.animationDelay = `${i * 0.12}s`;
+
+    taskDiv.innerHTML = `
+      <p>${taskObj.taskText}</p>
       <div class="input-container">
         <label for="answer${i}">Ваш ответ:</label>
         <input type="number" id="answer${i}" step="any" placeholder="Введите ответ" />
+        <span class="unit">${taskObj.unit}</span>
       </div>
       <div class="explanation" id="explanation${i}" style="display:none;"></div>
     `;
+
     tasksDiv.appendChild(taskDiv);
   }
+
+  setTimeout(() => {
+    let firstInput = document.getElementById("answer0");
+    if (firstInput) firstInput.focus();
+  }, 200);
 }
 
-function checkAnswers(){
-  const resultsDiv=document.getElementById("results");
-  resultsDiv.innerHTML="";
-  let gainedExp=0;
+/* ===================== NEXT ===================== */
+function nextTasks() {
+  document.getElementById("topic").value = lastSettings.topic;
+  document.getElementById("difficulty").value = lastSettings.difficulty;
+  document.getElementById("numTasks").value = lastSettings.numTasks;
+  document.getElementById("mode").value = lastSettings.mode;
+  generateTasks();
+}
 
-  for(let i=0;i<currentTasks.length;i++){
-    const task=currentTasks[i];
-    const input=document.getElementById(`answer${i}`);
-    const explanationDiv=document.getElementById(`explanation${i}`);
-    const userAnswerRaw=input.value.trim();
+/* ===================== ПРОВЕРКА ===================== */
+function checkAnswers() {
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.style.display = "block";
+  resultsDiv.innerHTML = "";
 
-    explanationDiv.style.display="none";
-    explanationDiv.innerHTML="";
+  let gainedExp = 0;
+  let correctCount = 0;
 
-    if(userAnswerRaw===""){
-      resultsDiv.innerHTML+=`<div>Задача ${i+1}: Ответ не введён.</div>`;
+  for (let i = 0; i < currentTasks.length; i++) {
+    const task = currentTasks[i];
+    const input = document.getElementById(`answer${i}`);
+    const explanationDiv = document.getElementById(`explanation${i}`);
+
+    const userAnswerRaw = input.value.trim();
+
+    explanationDiv.style.display = "none";
+    explanationDiv.innerHTML = "";
+
+    if (userAnswerRaw === "") {
+      resultsDiv.innerHTML += `<div>Задача ${i + 1}: Ответ не введён.</div>`;
       continue;
     }
 
-    const userAnswer=parseFloat(userAnswerRaw);
-    if(isNaN(userAnswer)){
-      resultsDiv.innerHTML+=`<div>Задача ${i+1}: Некорректный ответ.</div>`;
+    const userAnswer = parseFloat(userAnswerRaw);
+
+    if (isNaN(userAnswer)) {
+      resultsDiv.innerHTML += `<div>Задача ${i + 1}: Некорректный ответ.</div>`;
       continue;
     }
 
-    const tolerance=0.01;
-    if(Math.abs(userAnswer-task.answer)<=tolerance){
-      resultsDiv.innerHTML+=`<div style="color:green;">Задача ${i+1}: Верно!</div>`;
-      if(!task.isSolved){ gainedExp+=300; task.isSolved=true; }
+    let tolerance = 0.02;
+    if (task.unit === "Дж" || task.unit === "Н" || task.unit === "Вт") tolerance = 0.1;
+
+    if (Math.abs(userAnswer - task.answer) <= tolerance) {
+      resultsDiv.innerHTML += `<div class="good">Задача ${i + 1}: Верно ✅</div>`;
+      correctCount++;
+
+      if (!task.isSolved) {
+        gainedExp += getExpReward(task.difficulty);
+        task.isSolved = true;
+      }
     } else {
-      resultsDiv.innerHTML+=`<div style="color:red;">Задача ${i+1}: Неверно. Правильный ответ: ${task.answer}</div>`;
+      resultsDiv.innerHTML += `<div class="bad">Задача ${i + 1}: Неверно ❌ Правильный ответ: ${task.answer} ${task.unit}</div>`;
     }
 
-    explanationDiv.style.display="block";
-    explanationDiv.innerHTML=`<strong>Объяснение:</strong><br>${task.explanation}`;
+    if (!examMode) {
+      explanationDiv.style.display = "block";
+      explanationDiv.innerHTML = `<strong>Объяснение:</strong><br>${task.explanation}`;
+    }
   }
 
-  if(gainedExp>0){
-    experience+=gainedExp;
-    while(experience>=expForNextLevel(level)){
-      experience-=expForNextLevel(level);
+  if (examMode) {
+    resultsDiv.innerHTML += `<hr><b>Экзамен завершён!</b><br>`;
+  }
+
+  resultsDiv.innerHTML += `<hr><div>Правильных ответов: <b>${correctCount}</b> из <b>${currentTasks.length}</b></div>`;
+
+  // Оценка для экзамена
+  if (examMode) {
+    let percent = (correctCount / currentTasks.length) * 100;
+    let grade = "2";
+
+    if (percent >= 90) grade = "5";
+    else if (percent >= 70) grade = "4";
+    else if (percent >= 50) grade = "3";
+
+    resultsDiv.innerHTML += `<div style="margin-top:10px;"><b>Оценка:</b> ${grade} (${roundSmart(percent)}%)</div>`;
+
+    resultsDiv.innerHTML += `<hr><b>Объяснения:</b><br>`;
+    for (let i = 0; i < currentTasks.length; i++) {
+      let expDiv = document.getElementById(`explanation${i}`);
+      expDiv.style.display = "block";
+      expDiv.innerHTML = `<strong>Объяснение:</strong><br>${currentTasks[i].explanation}`;
+    }
+  }
+
+  let chosenTopic = lastSettings.topic;
+
+  if (chosenTopic !== "random") {
+    stats[chosenTopic].total += currentTasks.length;
+    stats[chosenTopic].correct += correctCount;
+  }
+
+  if (correctCount === currentTasks.length) {
+    correctStreak++;
+  } else {
+    correctStreak = 0;
+  }
+
+  saveStats();
+  updateStatsBox();
+
+  if (gainedExp > 0) {
+    experience += gainedExp;
+
+    let levelUps = 0;
+    while (experience >= expForNextLevel(level)) {
+      experience -= expForNextLevel(level);
       level++;
-      alert(`Поздравляем! Вы повысили уровень до ${level}!`);
+      levelUps++;
     }
+
     updateLevelDisplay();
+
+    if (levelUps > 0) {
+      const msg = document.getElementById("levelUpMessage");
+      msg.style.display = "block";
+      msg.innerHTML = `🎉 Поздравляем! Вы повысили уровень до <b>${level}</b>! (+${levelUps} уровень)`;
+    }
   }
+
+  checkAchievements();
 }
 
-function goBack(){
-  document.getElementById("menu").style.display="flex";
-  document.getElementById("tasks").innerHTML="";
-  document.getElementById("buttonsWrapper").style.display="none";
-  document.getElementById("results").innerHTML="";
-  document.body.style.backgroundImage="linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80')";
+/* ===================== СБРОС ===================== */
+function resetProgress() {
+  if (!confirm("Вы уверены? Прогресс будет полностью удалён!")) return;
+
+  localStorage.removeItem("experience");
+  localStorage.removeItem("level");
+  localStorage.removeItem("statsPhysics");
+  localStorage.removeItem("achievementsPhysics");
+  localStorage.removeItem("correctStreak");
+  localStorage.removeItem("lastSettings");
+
+  alert("Прогресс сброшен!");
+  location.reload();
 }
+
+/* ===================== НАЗАД ===================== */
+function goBack() {
+  document.getElementById("menu").style.display = "flex";
+  document.getElementById("tasks").innerHTML = "";
+  document.getElementById("buttonsWrapper").style.display = "none";
+  document.getElementById("results").innerHTML = "";
+  document.getElementById("results").style.display = "none";
+  document.getElementById("levelUpMessage").style.display = "none";
+  document.getElementById("statsBox").style.display = "none";
+  document.getElementById("achievementsBox").style.display = "none";
+  document.getElementById("examModeInfo").style.display = "none";
+
+  examMode = false;
+
+  document.body.style.backgroundImage =
+    "linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('https://images.unsplash.com/photo-1603964923133-fd8d03e6b63b?auto=format&fit=crop&w=1280&q=80')";
+}
+
+/* ===================== ENTER ===================== */
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Enter" && document.getElementById("buttonsWrapper").style.display === "flex") {
+    checkAnswers();
+  }
+});
+
+/* ===================== ЗАГРУЗКА НАСТРОЕК ===================== */
+document.getElementById("topic").value = lastSettings.topic;
+document.getElementById("difficulty").value = lastSettings.difficulty;
+document.getElementById("numTasks").value = lastSettings.numTasks;
+document.getElementById("mode").value = lastSettings.mode;
 
 updateLevelDisplay();
 </script>
